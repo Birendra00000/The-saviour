@@ -5,29 +5,72 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
+import axios from "axios";
 
+<<<<<<< HEAD
 
 const LoginScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
+=======
+interface LoginData {
+  phone_number: string;
+  password: string;
+}
+>>>>>>> 883e870c0fd8a431165e52ffae05069b6b21b59f
 
-  const handleLogin = () => {
-    // Add registration logic here
-    console.log("Phone Number:", phoneNumber, "Password:", password);
+const LoginScreen: React.FC = () => {
+  const [phone_number, setPhoneNumber] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const handleLogin = async () => {
+    const apiUrl = "http://192.168.10.60:8000/account/login/"; // Replace with your API endpoint
+    const payload: LoginData = {
+      phone_number,
+      password,
+    };
+
+    try {
+      const response = await axios.post(apiUrl, payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200) {
+        Alert.alert("Success", "Login successful!");
+        // Optionally navigate to another screen after successful login
+      } else {
+        Alert.alert("Error", response.data.message || "Login failed!");
+      }
+    } catch (error: any) {
+      if (error.response) {
+        // Server responded with a status other than 200 range
+        Alert.alert(
+          "Error",
+          error.response.data.message || "Something went wrong!"
+        );
+      } else {
+        // Network error or other issues
+        Alert.alert("Error", "An error occurred. Please try again.");
+      }
+      console.error("Error during login:", error);
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Create Account</Text>
+      <Text style={styles.title}>Login</Text>
       <Text style={styles.subtitle}>
-        Please fill in the details to register
+        Welcome back! Please login to continue.
       </Text>
 
       <TextInput
         style={styles.input}
         placeholder="Phone Number"
-        value={phoneNumber}
+        value={phone_number}
         onChangeText={setPhoneNumber}
         keyboardType="phone-pad"
         autoCapitalize="none"
@@ -41,11 +84,15 @@ const LoginScreen = () => {
       />
 
       <TouchableOpacity onPress={handleLogin} style={styles.button}>
-        <Text style={styles.buttonText}>Register</Text>
+        <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => "LoginScreen"}>
-        <Text style={styles.link}>Already have an account? Login</Text>
+      <TouchableOpacity
+        onPress={() => {
+          /* Navigation logic to Register screen */
+        }}
+      >
+        <Text style={styles.link}>Don't have an account? Register</Text>
       </TouchableOpacity>
     </View>
   );
@@ -61,7 +108,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#FF0000",
+    color: "#28A745",
     marginBottom: 10,
   },
   subtitle: {
@@ -78,7 +125,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   button: {
-    backgroundColor: "#FF0000",
+    backgroundColor: "#28A745",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
@@ -90,7 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   link: {
-    color: "#007BFF",
+    color: "#28A745",
     textAlign: "center",
     marginTop: 10,
   },
