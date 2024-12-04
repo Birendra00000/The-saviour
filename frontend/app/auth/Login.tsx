@@ -9,17 +9,10 @@ import {
 } from "react-native";
 import axios from "axios";
 
-<<<<<<< HEAD
-
-const LoginScreen = () => {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
-=======
 interface LoginData {
   phone_number: string;
   password: string;
 }
->>>>>>> 883e870c0fd8a431165e52ffae05069b6b21b59f
 
 const LoginScreen: React.FC = () => {
   const [phone_number, setPhoneNumber] = useState<string>("");

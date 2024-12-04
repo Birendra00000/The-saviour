@@ -59,7 +59,7 @@ const EmergencyAlertScreen = () => {
           <Text style={styles.actionButtonText}>🔔</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionButton}>
-          <Text style={styles.actionButtonText}>🚨</Text>
+          <Text style={styles.actionButtonText}>☰</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.actionButton, styles.sosButton]}>
           <Text style={[styles.actionButtonText, styles.sosButtonText]}>SOS</Text>
