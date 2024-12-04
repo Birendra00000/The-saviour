@@ -15,6 +15,12 @@ export default function TabTwoScreen() {
                 router.push("/auth/Register"); // Navigate to Login screen
               }}
             />{" "}
+            <Button
+              title="Login"
+              onPress={() => {
+                router.push("/auth/Login"); // Navigate to Login screen
+              }}
+            />{" "}
           </View>
         </SafeAreaView>
       </SafeAreaProvider>
