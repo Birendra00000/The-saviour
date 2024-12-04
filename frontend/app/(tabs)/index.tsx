@@ -1,7 +1,10 @@
+import { useRouter } from "expo-router";
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 const HomeScreen = () => {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
       {/* Action Buttons (Top Row) */}
@@ -21,7 +24,12 @@ const HomeScreen = () => {
 
       {/* Action Buttons (Bottom Row) */}
       <View style={styles.actionsRow}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            router.push("/page/Ambulance"); // Navigate to Login screen
+          }}
+        >
           <Text style={styles.buttonText}>Ambulance</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}>
