@@ -6,56 +6,70 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Button,
 } from "react-native";
 import axios from "axios";
+import CommonUrl from "../../components/BaseUrl/CommonApi";
 
 interface RegisterData {
-  name: string;
-  phoneNumber: number;
+  username: string;
+  phone_number: number; // Changed to number
   password: string;
 }
 
 const Register: React.FC = () => {
-  const [name, setName] = useState<string>("");
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [phone_number, setPhone_number] = useState<number | null>(null); // Changed to number
   const [password, setPassword] = useState<string>("");
 
   const handleRegister = async () => {
-    const apiUrl = "https://your-api-url.com/register"; // Replace with your API endpoint
-    const payload = {
-      name,
-      phoneNumber,
+    const apiUrl = CommonUrl; // Replace with your API endpoint
+    const payload: RegisterData = {
+      username,
+      phone_number: phone_number || 0, // Fallback for null
       password,
     };
 
     try {
-      const response = await axios.post(apiUrl, payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        "http://192.168.10.60:8000/account/register/",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.status === 200) {
         Alert.alert("Success", "Registration successful!");
         // Optionally clear form inputs
-        setName("");
-        setPhoneNumber("");
+        setUsername("");
+        setPhone_number(null);
         setPassword("");
       } else {
         Alert.alert("Error", response.data.message || "Registration failed!");
       }
     } catch (error: any) {
       if (error.response) {
-        // Server responded with a status other than 200 range
+        // Server responded with a status other than 2xx
+        console.error("Response Error:", error.response.data);
         Alert.alert(
           "Error",
           error.response.data.message || "Something went wrong!"
         );
+      } else if (error.request) {
+        // Request was made, but no response received
+        console.error("Request Error:", error.request);
+        Alert.alert(
+          "Error",
+          "No response from server. Please check your connection."
+        );
       } else {
-        // Network error or other issues
+        // Other errors like network errors
+        console.error("Error:", error.message);
         Alert.alert("Error", "An error occurred. Please try again.");
       }
-      console.error("Error during registration:", error);
     }
   };
 
@@ -67,17 +81,19 @@ const Register: React.FC = () => {
       <TextInput
         style={styles.input}
         placeholder="Full Name"
-        value={name}
-        onChangeText={setName}
+        value={username}
+        onChangeText={setUsername}
       />
       <TextInput
         style={styles.input}
         placeholder="Phone Number"
-        value={phoneNumber}
-        onChangeText={setPhoneNumber}
-        keyboardType="phone-pad"
-        autoCapitalize="none"
+        value={phone_number?.toString()} // Display number as string
+        onChangeText={
+          (value) => setPhone_number(value ? parseInt(value, 10) : null) // Parse input to a number
+        }
+        keyboardType="numeric"
       />
+
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -89,6 +105,9 @@ const Register: React.FC = () => {
       <TouchableOpacity onPress={handleRegister} style={styles.button}>
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
+      <View style={styles.footer_wrap_login}>
+        <Text>Already have an Account</Text> <Button title="Register" />{" "}
+      </View>
     </View>
   );
 };
@@ -103,7 +122,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#28A745",
+    color: "red",
     marginBottom: 10,
   },
   subtitle: {
@@ -120,7 +139,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   button: {
-    backgroundColor: "#28A745",
+    backgroundColor: "red",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
