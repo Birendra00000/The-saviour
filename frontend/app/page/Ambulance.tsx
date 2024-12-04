@@ -7,6 +7,7 @@ interface Ambulance {
   id: string;
   latitude: number;
   longitude: number;
+  distance?: number; // Optional distance property
 }
 
 const AmbulanceScreen: React.FC = () => {
@@ -20,8 +21,9 @@ const AmbulanceScreen: React.FC = () => {
   // Dummy ambulances
   const ambulances: Ambulance[] = [
     { id: "1", latitude: 45.61921927, longitude: -73.71678582 }, // 500 meters away
-    { id: "2", latitude: 27.7185, longitude: 85.3158 }, // 600 meters away
+    { id: "2", latitude: 27.693839, longitude: 84.448592 }, // 600 meters away
     { id: "3", latitude: 27.719, longitude: 85.3148 }, // 700 meters away
+    { id: "4", latitude: 27.71, longitude: 85.307 }, // 1500 meters away (Out of range)
   ];
 
   // Function to calculate the distance between two points in meters
@@ -62,19 +64,28 @@ const AmbulanceScreen: React.FC = () => {
         const location = await Location.getCurrentPositionAsync({});
         setUserLocation(location);
 
-        // Find the nearest ambulance
-        const distances = ambulances.map((ambulance) => ({
-          ...ambulance,
-          distance: calculateDistance(
-            location.coords.latitude,
-            location.coords.longitude,
-            ambulance.latitude,
-            ambulance.longitude
-          ),
-        }));
+        // Find ambulances within 1km (1000 meters)
+        const nearbyAmbulances = ambulances
+          .map((ambulance) => ({
+            ...ambulance,
+            distance: calculateDistance(
+              location.coords.latitude,
+              location.coords.longitude,
+              ambulance.latitude,
+              ambulance.longitude
+            ),
+          }))
+          .filter((ambulance) => ambulance.distance <= 1000); // Filter ambulances within 1km
 
-        distances.sort((a, b) => a.distance - b.distance); // Sort by nearest distance
-        setNearestAmbulance(distances[0]); // Set nearest ambulance
+        // If there are nearby ambulances, set the nearest one
+        if (nearbyAmbulances.length > 0) {
+          const nearest = nearbyAmbulances.sort(
+            (a, b) => a.distance - b.distance
+          )[0]; // Nearest ambulance
+          setNearestAmbulance(nearest);
+        } else {
+          setNearestAmbulance(null);
+        }
       } catch (error) {
         Alert.alert("Error", "Failed to fetch location.");
       } finally {
@@ -110,24 +121,37 @@ const AmbulanceScreen: React.FC = () => {
               latitude: userLocation.coords.latitude,
               longitude: userLocation.coords.longitude,
             }}
-            title="You"
+            title="User"
             description="Your current location"
-            pinColor="blue"
+            pinColor="red"
           />
 
-          {/* Ambulance Locations */}
-          {ambulances.map((ambulance) => (
-            <Marker
-              key={ambulance.id}
-              coordinate={{
-                latitude: ambulance.latitude,
-                longitude: ambulance.longitude,
-              }}
-              title={`Ambulance ${ambulance.id}`}
-              description="Ambulance location"
-              pinColor="red"
-            />
-          ))}
+          {/* Ambulance Locations within 1km */}
+          {ambulances
+            .map((ambulance) => ({
+              ...ambulance,
+              distance: calculateDistance(
+                userLocation.coords.latitude,
+                userLocation.coords.longitude,
+                ambulance.latitude,
+                ambulance.longitude
+              ),
+            }))
+            .filter((ambulance) => ambulance.distance <= 1000) // Only show ambulances within 1km
+            .map((ambulance) => (
+              <Marker
+                key={ambulance.id}
+                coordinate={{
+                  latitude: ambulance.latitude,
+                  longitude: ambulance.longitude,
+                }}
+                title={`Ambulance ${ambulance.id}`}
+                description={`Distance: ${ambulance.distance.toFixed(
+                  0
+                )} meters`}
+                pinColor="red"
+              />
+            ))}
 
           {/* Nearest Ambulance */}
           {nearestAmbulance && (
@@ -136,8 +160,8 @@ const AmbulanceScreen: React.FC = () => {
                 latitude: nearestAmbulance.latitude,
                 longitude: nearestAmbulance.longitude,
               }}
-              title="Nearest Ambulance"
-              description="This is the closest ambulance"
+              title={`Ambulance ${nearestAmbulance.id}`}
+              description={`Phone: 985663770`}
               pinColor="green"
             />
           )}
@@ -147,13 +171,10 @@ const AmbulanceScreen: React.FC = () => {
         <Text style={styles.infoText}>
           Nearest Ambulance:{" "}
           {nearestAmbulance
-            ? `Ambulance ${nearestAmbulance.id} at ${calculateDistance(
-                userLocation?.coords.latitude || 0,
-                userLocation?.coords.longitude || 0,
-                nearestAmbulance.latitude,
-                nearestAmbulance.longitude
-              ).toFixed(0)} meters`
-            : "No ambulances available"}
+            ? `Ambulance ${
+                nearestAmbulance.id
+              } at ${nearestAmbulance.distance?.toFixed(0)} meters`
+            : "No ambulances within 1km"}
         </Text>
       </View>
     </View>
