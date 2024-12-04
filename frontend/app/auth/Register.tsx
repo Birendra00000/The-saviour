@@ -1,21 +1,69 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from "react-native";
+import axios from "axios";
 
-const RegisterScreen = ({ }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+interface RegisterData {
+  name: string;
+  phoneNumber: number;
+  password: string;
+}
 
-  const handleRegister = () => {
-    // Add registration logic here
-    console.log('Name:', name, 'Email:', email, 'Password:', password);
+const Register: React.FC = () => {
+  const [name, setName] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const handleRegister = async () => {
+    const apiUrl = "https://your-api-url.com/register"; // Replace with your API endpoint
+    const payload = {
+      name,
+      phoneNumber,
+      password,
+    };
+
+    try {
+      const response = await axios.post(apiUrl, payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200) {
+        Alert.alert("Success", "Registration successful!");
+        // Optionally clear form inputs
+        setName("");
+        setPhoneNumber("");
+        setPassword("");
+      } else {
+        Alert.alert("Error", response.data.message || "Registration failed!");
+      }
+    } catch (error: any) {
+      if (error.response) {
+        // Server responded with a status other than 200 range
+        Alert.alert(
+          "Error",
+          error.response.data.message || "Something went wrong!"
+        );
+      } else {
+        // Network error or other issues
+        Alert.alert("Error", "An error occurred. Please try again.");
+      }
+      console.error("Error during registration:", error);
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Create Account</Text>
       <Text style={styles.subtitle}>Join us to stay safe and connected</Text>
-      
+
       <TextInput
         style={styles.input}
         placeholder="Full Name"
@@ -24,10 +72,10 @@ const RegisterScreen = ({ }) => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
+        placeholder="Phone Number"
+        value={phoneNumber}
+        onChangeText={setPhoneNumber}
+        keyboardType="phone-pad"
         autoCapitalize="none"
       />
       <TextInput
@@ -37,13 +85,9 @@ const RegisterScreen = ({ }) => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      
+
       <TouchableOpacity onPress={handleRegister} style={styles.button}>
         <Text style={styles.buttonText}>Register</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
-        <Text style={styles.link}>Already have an account? Login</Text>
       </TouchableOpacity>
     </View>
   );
@@ -53,45 +97,45 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    justifyContent: 'center',
-    backgroundColor: '#f8f9fa',
+    justifyContent: "center",
+    backgroundColor: "#f8f9fa",
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#28A745',
+    fontWeight: "bold",
+    color: "#28A745",
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 16,
-    color: '#6c757d',
+    color: "#6c757d",
     marginBottom: 20,
   },
   input: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     padding: 15,
     marginBottom: 10,
     borderRadius: 10,
-    borderColor: '#ced4da',
+    borderColor: "#ced4da",
     borderWidth: 1,
   },
   button: {
-    backgroundColor: '#28A745',
+    backgroundColor: "#28A745",
     padding: 15,
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 10,
   },
   buttonText: {
-    color: '#ffffff',
-    fontWeight: 'bold',
+    color: "#ffffff",
+    fontWeight: "bold",
     fontSize: 16,
   },
   link: {
-    color: '#28A745',
-    textAlign: 'center',
+    color: "#28A745",
+    textAlign: "center",
     marginTop: 10,
   },
 });
 
-export default RegisterScreen;
+export default Register;
