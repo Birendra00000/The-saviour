@@ -18,7 +18,7 @@ export default function TabTwoScreen() {
             <Button
               title="Login"
               onPress={() => {
-                router.push("/auth/Login"); // Navigate to Login screen
+                router.push("/auth/Login "); // Navigate to Login screen
               }}
             />{" "}
           </View>
