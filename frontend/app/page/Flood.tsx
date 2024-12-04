@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from "expo-router";
 import {
   View,
   Text,
@@ -8,6 +9,7 @@ import {
 } from "react-native";
 
 const EmergencyAlertScreen = () => {
+  const router = useRouter();
   const [timer, setTimer] = useState(5);
   const [isRunning, setIsRunning] = useState(true);
 
@@ -58,7 +60,9 @@ const EmergencyAlertScreen = () => {
         <TouchableOpacity style={styles.actionButton}>
           <Text style={styles.actionButtonText}>🔔</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton}>
+        <TouchableOpacity style={styles.actionButton} onPress={() => {
+            router.push("/page/Menu"); // Navigate to Login screen
+          }}>
           <Text style={styles.actionButtonText}>☰</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.actionButton, styles.sosButton]}>
