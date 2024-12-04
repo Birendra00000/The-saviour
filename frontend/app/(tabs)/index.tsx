@@ -2,21 +2,26 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
-
 const HomeScreen = () => {
   const router = useRouter();
   return (
     <View style={styles.container}>
       {/* Action Buttons (Top Row) */}
       <View style={styles.actionsRow}>
-        <TouchableOpacity style={styles.button}  onPress={() => {
-                router.push("/Flood"); // Navigate to Login screen
-              }}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            router.push("/page/Flood"); // Navigate to Login screen
+          }}
+        >
           <Text style={styles.buttonText}>Flood</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {
-          router.push("/Police")
-        }} >
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            router.push("/page/Police");
+          }}
+        >
           <Text style={styles.buttonText}>Police</Text>
         </TouchableOpacity>
       </View>
@@ -28,14 +33,20 @@ const HomeScreen = () => {
 
       {/* Action Buttons (Bottom Row) */}
       <View style={styles.actionsRow}>
-        <TouchableOpacity style={styles.button} onPress={() => {
-          router.push("/Ambulance")
-        }}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            router.push("/page/Ambulance");
+          }}
+        >
           <Text style={styles.buttonText}>Ambulance</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {
-          router.push("/Other")
-        }}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            router.push("/Other");
+          }}
+        >
           <Text style={styles.buttonText}>Other</Text>
         </TouchableOpacity>
       </View>
