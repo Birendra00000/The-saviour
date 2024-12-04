@@ -19,12 +19,12 @@ const AmbulanceScreen: React.FC = () => {
 
   // Dummy ambulances
   const ambulances: Ambulance[] = [
-    { id: "1", latitude: 27.7175, longitude: 85.3155 }, // 500 meters away
-    { id: "2", latitude: 27.718, longitude: 85.3152 }, // 800 meters away
-    { id: "3", latitude: 27.719, longitude: 85.3148 }, // 1000 meters away
+    { id: "1", latitude: 45.61921927, longitude: -73.71678582 }, // 500 meters away
+    { id: "2", latitude: 27.7185, longitude: 85.3158 }, // 600 meters away
+    { id: "3", latitude: 27.719, longitude: 85.3148 }, // 700 meters away
   ];
 
-  // Function to calculate the distance between two points in kilometers
+  // Function to calculate the distance between two points in meters
   const calculateDistance = (
     lat1: number,
     lon1: number,
@@ -32,7 +32,7 @@ const AmbulanceScreen: React.FC = () => {
     lon2: number
   ): number => {
     const toRadians = (degree: number) => (degree * Math.PI) / 180;
-    const R = 6371; // Radius of Earth in kilometers
+    const R = 6371000; // Radius of Earth in meters
     const dLat = toRadians(lat2 - lat1);
     const dLon = toRadians(lon2 - lon1);
     const a =
@@ -42,7 +42,7 @@ const AmbulanceScreen: React.FC = () => {
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // Distance in kilometers
+    return R * c; // Distance in meters
   };
 
   // Fetch user location and find the nearest ambulance
@@ -152,7 +152,7 @@ const AmbulanceScreen: React.FC = () => {
                 userLocation?.coords.longitude || 0,
                 nearestAmbulance.latitude,
                 nearestAmbulance.longitude
-              ).toFixed(2)} km`
+              ).toFixed(0)} meters`
             : "No ambulances available"}
         </Text>
       </View>
