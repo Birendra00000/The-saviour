@@ -7,6 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 
+
 const LoginScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
