@@ -1,20 +1,28 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 
 const LoginScreen = () => {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = () => {
     // Add registration logic here
-    console.log('Phone Number:', phoneNumber, 'Password:', password);
+    console.log("Phone Number:", phoneNumber, "Password:", password);
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Create Account</Text>
-      <Text style={styles.subtitle}>Please fill in the details to register</Text>
-      
+      <Text style={styles.subtitle}>
+        Please fill in the details to register
+      </Text>
+
       <TextInput
         style={styles.input}
         placeholder="Phone Number"
@@ -30,12 +38,12 @@ const LoginScreen = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      
+
       <TouchableOpacity onPress={handleLogin} style={styles.button}>
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
-      
-      <TouchableOpacity onPress={() =>('LoginScreen')}>
+
+      <TouchableOpacity onPress={() => "LoginScreen"}>
         <Text style={styles.link}>Already have an account? Login</Text>
       </TouchableOpacity>
     </View>
@@ -46,43 +54,43 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    justifyContent: 'center',
-    backgroundColor: '#f8f9fa',
+    justifyContent: "center",
+    backgroundColor: "#f8f9fa",
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#FF0000',
+    fontWeight: "bold",
+    color: "#FF0000",
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 16,
-    color: '#6c757d',
+    color: "#6c757d",
     marginBottom: 20,
   },
   input: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     padding: 15,
     marginBottom: 10,
     borderRadius: 10,
-    borderColor: '#ced4da',
+    borderColor: "#ced4da",
     borderWidth: 1,
   },
   button: {
-    backgroundColor: '#FF0000',
+    backgroundColor: "#FF0000",
     padding: 15,
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 10,
   },
   buttonText: {
-    color: '#ffffff',
-    fontWeight: 'bold',
+    color: "#ffffff",
+    fontWeight: "bold",
     fontSize: 16,
   },
   link: {
-    color: '#FF0000',
-    textAlign: 'center',
+    color: "#007BFF",
+    textAlign: "center",
     marginTop: 10,
   },
 });

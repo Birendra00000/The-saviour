@@ -11,20 +11,20 @@ import axios from "axios";
 
 interface RegisterData {
   name: string;
-  phoneNumber: number;
+  phone_number: number;
   password: string;
 }
 
 const Register: React.FC = () => {
-  const [name, setName] = useState<string>("");
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [username, setName] = useState<string>("");
+  const [phone_number, setPhoneNumber] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const handleRegister = async () => {
-    const apiUrl = "https://your-api-url.com/register"; // Replace with your API endpoint
+    const apiUrl = "http://192.168.10.60:8000/account/register/"; // Replace with your API endpoint
     const payload = {
-      name,
-      phoneNumber,
+      username,
+      phone_number,
       password,
     };
 
@@ -67,13 +67,13 @@ const Register: React.FC = () => {
       <TextInput
         style={styles.input}
         placeholder="Full Name"
-        value={name}
+        value={username}
         onChangeText={setName}
       />
       <TextInput
         style={styles.input}
         placeholder="Phone Number"
-        value={phoneNumber}
+        value={phone_number}
         onChangeText={setPhoneNumber}
         keyboardType="phone-pad"
         autoCapitalize="none"
