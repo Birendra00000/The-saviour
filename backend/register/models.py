@@ -1,9 +1,10 @@
-
+from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
 class CustomUser(AbstractUser):
-    phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
+    phone_validator = RegexValidator()
+    phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True,validators=[phone_validator] )
 
     groups = models.ManyToManyField(
         Group,

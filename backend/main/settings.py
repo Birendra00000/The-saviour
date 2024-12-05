@@ -153,3 +153,4 @@ CORS_ALLOW_HEADERS = [
 AUTH_USER_MODEL = 'register.CustomUser'
 
 
+
