@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'myApp',
     'register',
+    'sos',
 ]
 
 MIDDLEWARE = [
@@ -151,5 +152,6 @@ CORS_ALLOW_HEADERS = [
 
 
 AUTH_USER_MODEL = 'register.CustomUser'
+
 
 
