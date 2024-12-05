@@ -11,4 +11,4 @@ class SOSMessage(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"SOS from {self.user.username} at {self.timestamp}"
+        return f"SOS {self.message} at {self.timestamp}"
