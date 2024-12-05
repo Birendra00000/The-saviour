@@ -1,9 +1,108 @@
-import React from "react";
-import { Image, StyleSheet, View, Text, TouchableOpacity, SafeAreaView } from "react-native";
+import { useNavigation, useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { RelativePathString } from "expo-router";
+import {
+  Image,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  SafeAreaView,
+  StatusBar,
+} from "react-native";
+import * as Location from "expo-location";
+
+// Emergency options
+const emergencyOptions: {
+  label: string;
+  emoji: string;
+  color: string;
+  route: RelativePathString;
+}[] = [
+  {
+    label: "Flood",
+    emoji: "🌊",
+    color: "#EBF5FB",
+    route: "/page/Flood" as RelativePathString,
+  },
+  {
+    label: "Landslide",
+    emoji: "⛰️",
+    color: "#F9EBEA",
+    route: "/landslide" as RelativePathString,
+  },
+  {
+    label: "Fire Brigade",
+    emoji: "🚒",
+    color: "#FDEDEC",
+    route: "/fire-brigade" as RelativePathString,
+  },
+  {
+    label: "Ambulance",
+    emoji: "🚑",
+    color: "#F5EEF8",
+    route: "/page/Ambulance" as RelativePathString,
+  },
+  {
+    label: "Police",
+    emoji: "👮",
+    color: "#E9F7EF",
+    route: "/page/Police" as RelativePathString,
+  },
+  {
+    label: "Help Desk",
+    emoji: "👨‍💻",
+    color: "#EAF2F8",
+    route: "/help-desk" as RelativePathString,
+  },
+];
 
 export default function HomeScreen() {
+  const [location, setLocation] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const router = useRouter();
+
+  const navigation = useNavigation();
+  navigation.setOptions({
+    headerShown: false,
+  });
+
+  useEffect(() => {
+    (async () => {
+      // Request permission to access location
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied.");
+        return;
+      }
+
+      // Get current location
+      let loc = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = loc.coords;
+
+      // Reverse geocode to get human-readable address
+      let address = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude,
+      });
+
+      // Combine address components
+      if (address && address.length > 0) {
+        const addr = address[0];
+        const fullAddress = `${addr.street || ""}, ${addr.city || ""}, ${
+          addr.region || ""
+        }, ${addr.country || ""}`;
+        setLocation(fullAddress);
+      }
+    })();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
+      {/* Set the status bar color */}
+      <StatusBar backgroundColor="#FF0000" barStyle="light-content" />
+
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.logoContainer}>
@@ -14,7 +113,9 @@ export default function HomeScreen() {
         </View>
         <View style={styles.locationContainer}>
           <Text style={styles.currentLocation}>Current location</Text>
-          <Text style={styles.address}>4th Mound Road, California</Text>
+          <Text style={styles.address}>
+            {location || errorMsg || "Fetching location..."}
+          </Text>
         </View>
         <View style={styles.headerIcons}>
           <TouchableOpacity>
@@ -28,7 +129,8 @@ export default function HomeScreen() {
         <View style={styles.textContainer}>
           <Text style={styles.title}>Are you in an emergency?</Text>
           <Text style={styles.description}>
-            Press the SOS button, your live location will be shared with the nearest help center and your emergency contacts.
+            Press the SOS button, your live location will be shared with the
+            nearest help center and your emergency contacts.
           </Text>
         </View>
         <Image
@@ -41,24 +143,18 @@ export default function HomeScreen() {
       <View style={styles.sosContainer}>
         <TouchableOpacity style={styles.sosButton}>
           <Text style={styles.sosText}>SOS</Text>
-          <Text style={styles.sosSubText}>Press 3 seconds</Text>
         </TouchableOpacity>
       </View>
 
       {/* Emergency Options */}
+
       <Text style={styles.emergencyTitle}>What's your emergency?</Text>
       <View style={styles.emergencyGrid}>
-        {[
-          { label: "Flood", emoji: "🌊", color: "#EBF5FB" },
-          { label: "Landslide", emoji: "⛰️", color: "#F9EBEA" },
-          { label: "Fire Brigade", emoji: "🚒", color: "#FDEDEC" },
-          { label: "Ambulance", emoji: "🚑", color: "#F5EEF8" },
-          { label: "Police", emoji: "👮", color: "#E9F7EF" },
-          { label: "Help Desk", emoji: "👨‍💻", color: "#EAF2F8" },
-        ].map((item, index) => (
+        {emergencyOptions.map((item, index) => (
           <TouchableOpacity
             key={index}
             style={[styles.emergencyOption, { backgroundColor: item.color }]}
+            onPress={() => router.push(item.route)} // Navigate to the specified route
           >
             <Text style={styles.emergencyIcon}>{item.emoji}</Text>
             <Text style={styles.emergencyText}>{item.label}</Text>
@@ -86,6 +182,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F5F5F5",
+    paddingTop: 25,
   },
   header: {
     flexDirection: "row",
@@ -160,7 +257,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: "#FF6F61",
+    backgroundColor: "red",
     justifyContent: "center",
     alignItems: "center",
     elevation: 10,
@@ -219,7 +316,7 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingVertical: 10,
+    paddingVertical: 5,
     backgroundColor: "#FFFFFF",
     position: "absolute",
     bottom: 0,
