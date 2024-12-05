@@ -10,12 +10,6 @@ class RegisterNumber(models.Model):
     def __str__(self):
         return f"{self.phone_number} - {self.user.username}"
 
-class SOSMessage(models.Model):
-    message = models.TextField(default="This is an SOS message. Please help!",)
-
-    def __str__(self):
-        return self.message
-
 class TimeInterval(models.Model):
     TIME_CHOICES = [
         (3, "3 sec"),
@@ -46,3 +40,4 @@ class DeletedNumber(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.phone_number} (Deleted by: {self.user.username})"
+
