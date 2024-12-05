@@ -9,21 +9,18 @@ import {
 } from "react-native";
 import axios from "axios";
 
-interface RegisterData {
-  name: string;
-  phone_number: number;
+interface LoginData {
+  phone_number: string;
   password: string;
 }
 
-const Register: React.FC = () => {
-  const [username, setName] = useState<string>("");
+const LoginScreen: React.FC = () => {
   const [phone_number, setPhoneNumber] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const handleRegister = async () => {
-    const apiUrl = "http://192.168.10.60:8000/account/register/"; // Replace with your API endpoint
-    const payload = {
-      username,
+  const handleLogin = async () => {
+    const apiUrl = "http://192.168.10.60:8000/account/login/"; // Replace with your API endpoint
+    const payload: LoginData = {
       phone_number,
       password,
     };
@@ -36,13 +33,10 @@ const Register: React.FC = () => {
       });
 
       if (response.status === 200) {
-        Alert.alert("Success", "Registration successful!");
-        // Optionally clear form inputs
-        setName("");
-        setPhoneNumber("");
-        setPassword("");
+        Alert.alert("Success", "Login successful!");
+        // Optionally navigate to another screen after successful login
       } else {
-        Alert.alert("Error", response.data.message || "Registration failed!");
+        Alert.alert("Error", response.data.message || "Login failed!");
       }
     } catch (error: any) {
       if (error.response) {
@@ -55,21 +49,17 @@ const Register: React.FC = () => {
         // Network error or other issues
         Alert.alert("Error", "An error occurred. Please try again.");
       }
-      console.error("Error during registration:", error);
+      console.error("Error during login:", error);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Create Account</Text>
-      <Text style={styles.subtitle}>Join us to stay safe and connected</Text>
+      <Text style={styles.title}>Login</Text>
+      <Text style={styles.subtitle}>
+        Welcome back! Please login to continue.
+      </Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Full Name"
-        value={username}
-        onChangeText={setName}
-      />
       <TextInput
         style={styles.input}
         placeholder="Phone Number"
@@ -86,8 +76,16 @@ const Register: React.FC = () => {
         secureTextEntry
       />
 
-      <TouchableOpacity onPress={handleRegister} style={styles.button}>
-        <Text style={styles.buttonText}>Register</Text>
+      <TouchableOpacity onPress={handleLogin} style={styles.button}>
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
+          /* Navigation logic to Register screen */
+        }}
+      >
+        <Text style={styles.link}>Don't have an account? Register</Text>
       </TouchableOpacity>
     </View>
   );
@@ -103,7 +101,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#FF0000",
+    color: "#28A745",
     marginBottom: 10,
   },
   subtitle: {
@@ -120,7 +118,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   button: {
-    backgroundColor: "#FF0000",
+    backgroundColor: "#28A745",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
@@ -138,4 +136,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Register;
+export default LoginScreen;
