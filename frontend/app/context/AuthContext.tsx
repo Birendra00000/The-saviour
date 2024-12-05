@@ -35,7 +35,7 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
-  const tokenExpirationDuration = 60 * 60; // 1 hour in milliseconds
+  const tokenExpirationDuration = 60 * 60 * 1000; // 1 hour in milliseconds
 
   useEffect(() => {
     const checkAuth = async () => {
