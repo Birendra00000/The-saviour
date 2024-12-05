@@ -1,16 +1,11 @@
 from rest_framework import serializers
-from .models import RegisterNumber, SOSMessage, TimeInterval, ViewNumber, DeletedNumber
+from .models import RegisterNumber,TimeInterval, ViewNumber, DeletedNumber
 
 class RegisterNumberSerializer(serializers.ModelSerializer):
     class Meta:
         model = RegisterNumber
         fields = ['user','id', 'name', 'phone_number', 'created_at']
         read_only_fields = ['user','created_at']
-
-class SOSMessageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SOSMessage
-        fields = ['id', 'message']
 
 class TimeIntervalSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,19 +35,14 @@ class DeletedNumberSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context['request'].user
         register_number_id = validated_data.pop('register_number_id')
-        
-        # Fetch the RegisterNumber instance
         register_number = RegisterNumber.objects.get(id=register_number_id, user=user)
         
-        # Create the DeletedNumber entry
         deleted_number = DeletedNumber.objects.create(
             user=user,
             name=register_number.name,
             phone_number=register_number.phone_number,
             deleted_at=register_number.created_at
         )
-        
-        # Delete the RegisterNumber instance
         register_number.delete()
-
         return deleted_number
+

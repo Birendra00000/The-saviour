@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'myApp',
     'register',
+    'sos',
 ]
 
 MIDDLEWARE = [
