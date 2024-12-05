@@ -14,8 +14,10 @@ def register(request):
 
     if serializer.is_valid():
         user = serializer.save()
+        token = Token.objects.get(user=user)
         data['message'] = "Registration successful!"
         data['phone_number'] = user.phone_number  
+        data['token'] = token.key
         return Response(data, status=201)
     else:
         return Response(serializer.errors, status=400)
@@ -39,4 +41,7 @@ def custom_login(request):
     if not user:
         return Response({'error': 'Invalid phone number or password!'}, status=400)
 
-    return Response({'message': 'Login successful!'}, status=200)
+
+    token, created = Token.objects.get_or_create(user=user)
+    return Response({'message': 'Login successful!',
+    'token': token.key}, status=200)

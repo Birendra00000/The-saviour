@@ -4,9 +4,9 @@ from .viewsets import (
     RegisterNumberViewSet,TimeIntervalViewSet, ViewNumberViewSet, DeletedNumberViewSet)
 
 router = DefaultRouter()
-router.register(r'register-numbers', RegisterNumberViewSet, basename='registerNumber')
-router.register(r'time-intervals', TimeIntervalViewSet, basename='timeinterval')
-router.register(r'view-numbers', ViewNumberViewSet, basename='viewnumber')
+router.register(r'registernumbers', RegisterNumberViewSet, basename='registerNumber')
+router.register(r'timeintervals', TimeIntervalViewSet, basename='timeinterval')
+router.register(r'viewnumbers', ViewNumberViewSet, basename='viewnumber')
 router.register(r'deleted-numbers', DeletedNumberViewSet, basename='deletednumber')
 
 urlpatterns = [

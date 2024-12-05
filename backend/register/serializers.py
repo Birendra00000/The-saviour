@@ -1,10 +1,10 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
 
 CustomUser = get_user_model()
 
 class RegistrationSerializer(serializers.ModelSerializer):
-    #confirm_password = serializers.CharField(style={'input_type': 'password'}, write_only=True)
 
     class Meta:
         model = CustomUser
@@ -26,4 +26,5 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
 
+        Token.objects.create(user=user)
         return user
