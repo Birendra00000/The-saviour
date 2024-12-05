@@ -8,7 +8,7 @@ import {
   Alert,
 } from "react-native";
 import axios from "axios";
-
+import { useAuth } from "../context/AuthContext";
 interface LoginData {
   phone_number: string;
   password: string;
@@ -17,6 +17,8 @@ interface LoginData {
 const LoginScreen: React.FC = () => {
   const [phone_number, setPhoneNumber] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  const { login } = useAuth(); // Destructure login function from context
 
   const handleLogin = async () => {
     const apiUrl = "http://192.168.10.60:8000/account/login/"; // Replace with your API endpoint
@@ -34,7 +36,8 @@ const LoginScreen: React.FC = () => {
 
       if (response.status === 200) {
         Alert.alert("Success", "Login successful!");
-        // Optionally navigate to another screen after successful login
+        // Use the login function from context to save the token and update state
+        login(response.data.token); // Assuming the response contains the token
       } else {
         Alert.alert("Error", response.data.message || "Login failed!");
       }
