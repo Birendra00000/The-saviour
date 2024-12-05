@@ -1,89 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useRouter } from "expo-router";
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   Linking,
-  Alert,
 } from "react-native";
 
 const EmergencyAlertScreen = () => {
-  const [timer, setTimer] = useState(5); // Initial timer set to 5 seconds
-  const [isRunning, setIsRunning] = useState(true);
-  const [mobileNumber, setMobileNumber] = useState("9805253000"); // Emergency contact number
+  const router = useRouter();
+  const mobileNumber = "9805253000"; // Emergency contact number
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
-
-    if (isRunning && timer > 0) {
-      interval = setInterval(() => {
-        setTimer((prevTimer) => prevTimer - 1);
-      }, 1000);
-    } else if (timer === 0) {
-      handleEmergencyCall(); // Automatically trigger emergency call when timer reaches 0
-      setIsRunning(false);
-    }
-
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [isRunning, timer]);
-
-  const stopTimer = () => {
-    setIsRunning(false);
-    Alert.alert("Timer Stopped", "The SOS alert has been canceled.");
-  };
-
+  // Function to directly open the phone app and initiate a call
   const handleEmergencyCall = () => {
-    Linking.openURL(`tel:${mobileNumber}`).catch(() => {
-      Alert.alert("Error", "Cannot make a call. Please check your settings.");
-    });
+    Linking.openURL(`tel:${mobileNumber}`); // Directly opens the call app
   };
 
   return (
     <View style={styles.container}>
-      {/* Top Icon */}
-      <View style={styles.topIconContainer}>
-        <View style={styles.topIcon}>
-          <Text style={styles.topIconText}>*</Text>
-        </View>
-      </View>
-
       {/* Title and Description */}
-      <Text style={styles.title}>Sending Emergency Alert</Text>
+      <Text style={styles.title}>Emergency Alert</Text>
       <Text style={styles.subtitle}>
-        SOS will be sent once the timer is off.
+        Tap the button below to make an emergency call.
       </Text>
 
-      {/* Timer */}
-      <TouchableOpacity style={styles.timerContainer} onPress={stopTimer}>
-        <Text style={styles.timerText}>{`00 : ${timer
-          .toString()
-          .padStart(2, "0")}`}</Text>
-        <Text style={styles.timerSubtitle}>Seconds</Text>
+      {/* Emergency Call Button */}
+      <TouchableOpacity
+        style={styles.callButtonContainer}
+        onPress={handleEmergencyCall}
+      >
+        <Text style={styles.callButtonText}>SOS Call</Text>
       </TouchableOpacity>
-      <Text style={styles.stopInstruction}>Tap the timer to stop</Text>
-
-      {/* Bottom Actions */}
-      <View style={styles.bottomActions}>
-        <TouchableOpacity style={styles.actionButton}>
-          <Text style={styles.actionButtonText}>🔔</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton}>
-          <Text style={styles.actionButtonText}>🚨</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.actionButton, styles.sosButton]}
-          onPress={handleEmergencyCall}
-        >
-          <Text style={[styles.actionButtonText, styles.sosButtonText]}>
-            SOS
-          </Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -92,45 +40,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     backgroundColor: "#F9FAFC",
     paddingVertical: 40,
-  },
-  topIconContainer: {
-    marginTop: 10,
-    alignItems: "center",
-  },
-  topIcon: {
-    backgroundColor: "#FFFFFF",
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 4,
-  },
-  topIconText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#FF5C5C",
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     color: "#1F2937",
     textAlign: "center",
-  },
-  subtitle: {
-    fontSize: 14,
-    color: "#6B7280",
-    textAlign: "center",
     marginBottom: 10,
   },
-  timerContainer: {
+  subtitle: {
+    fontSize: 16,
+    color: "#6B7280",
+    textAlign: "center",
+    marginBottom: 30,
+  },
+  callButtonContainer: {
     backgroundColor: "#FF5C5C",
     width: 200,
     height: 200,
@@ -143,48 +70,8 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 5,
   },
-  timerText: {
+  callButtonText: {
     fontSize: 36,
-    color: "#FFFFFF",
-    fontWeight: "bold",
-  },
-  timerSubtitle: {
-    fontSize: 16,
-    color: "#FFFFFF",
-    marginTop: 5,
-  },
-  stopInstruction: {
-    fontSize: 14,
-    color: "#6B7280",
-    textAlign: "center",
-    marginTop: 20,
-  },
-  bottomActions: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "80%",
-  },
-  actionButton: {
-    backgroundColor: "#1F2937",
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  actionButtonText: {
-    fontSize: 20,
-    color: "#FFFFFF",
-  },
-  sosButton: {
-    backgroundColor: "#FF5C5C",
-  },
-  sosButtonText: {
     color: "#FFFFFF",
     fontWeight: "bold",
   },
