@@ -4,10 +4,6 @@ from register.serializers import RegistrationSerializer
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model  
 from rest_framework.authtoken.models import Token
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-
 
 User = get_user_model()  
 
@@ -51,13 +47,13 @@ def custom_login(request):
     'token': token.key}, status=200)
 
 
-class RefreshTokenView(APIView):
-    permission_classes = [IsAuthenticated]
+# class RefreshTokenView(APIView):
+#     permission_classes = [IsAuthenticated]
 
-    def post(self, request, *args, **kwargs):
-        # Delete old token
-        request.auth.delete()
+#     def post(self, request, *args, **kwargs):
+#         # Delete old token
+#         request.auth.delete()
         
-        # Create a new token
-        new_token = Token.objects.create(user=request.user)
-        return Response({'token': new_token.key})
+#         # Create a new token
+#         new_token = Token.objects.create(user=request.user)
+#         return Response({'token': new_token.key})
