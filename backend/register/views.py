@@ -4,6 +4,10 @@ from register.serializers import RegistrationSerializer
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model  
 from rest_framework.authtoken.models import Token
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
 
 User = get_user_model()  
 
@@ -16,7 +20,7 @@ def register(request):
         user = serializer.save()
         token = Token.objects.get(user=user)
         data['message'] = "Registration successful!"
-        data['phone_number'] = user.phone_number  
+        #data['phone_number'] = user.phone_number  
         data['token'] = token.key
         return Response(data, status=201)
     else:
@@ -45,3 +49,15 @@ def custom_login(request):
     token, created = Token.objects.get_or_create(user=user)
     return Response({'message': 'Login successful!',
     'token': token.key}, status=200)
+
+
+class RefreshTokenView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        # Delete old token
+        request.auth.delete()
+        
+        # Create a new token
+        new_token = Token.objects.create(user=request.user)
+        return Response({'token': new_token.key})
