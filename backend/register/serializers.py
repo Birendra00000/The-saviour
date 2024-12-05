@@ -16,8 +16,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     def save(self):
         password = self.validated_data['password']
-        
-
         if CustomUser.objects.filter(phone_number=self.validated_data.get('phone_number')).exists():
             raise serializers.ValidationError({'error': 'Phone number is already registered!'})
 
