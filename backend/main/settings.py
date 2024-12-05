@@ -39,9 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
+    'channels',
     'myApp',
     'register',
     'sos',
+    'admin_register',
 ]
 
 MIDDLEWARE = [
@@ -118,6 +121,16 @@ USE_I18N = True
 USE_TZ = True
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+}
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
@@ -152,6 +165,10 @@ CORS_ALLOW_HEADERS = [
 
 
 AUTH_USER_MODEL = 'register.CustomUser'
+
+
+ASGI_APPLICATION = "main.asgi.application"
+
 
 
 
