@@ -20,7 +20,8 @@ class TimeIntervalSerializer(serializers.ModelSerializer):
 class ViewNumberSerializer(serializers.ModelSerializer):
     class Meta:
         model = ViewNumber
-        fields = ['id', 'user', 'name', 'phone_number']
+        fields = [#'id', 'user', 
+        'name', 'phone_number']
 
 class DeletedNumberSerializer(serializers.ModelSerializer):
     register_number_id = serializers.IntegerField(write_only=True, required=True)

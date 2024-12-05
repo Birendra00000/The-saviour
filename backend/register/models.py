@@ -8,11 +8,11 @@ class CustomUser(AbstractUser):
 
     groups = models.ManyToManyField(
         Group,
-        related_name="customuser_groups",  # Avoids clash with default User.groups
+        related_name="customuser_groups", 
         blank=True
     )
     user_permissions = models.ManyToManyField(
         Permission,
-        related_name="customuser_user_permissions",  # Avoids clash with default User.user_permissions
+        related_name="customuser_user_permissions",  
         blank=True
     )
