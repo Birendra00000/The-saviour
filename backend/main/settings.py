@@ -169,6 +169,10 @@ AUTH_USER_MODEL = 'register.CustomUser'
 
 ASGI_APPLICATION = "main.asgi.application"
 
-
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 
