@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import SOSMessageView
+from .views import SOSMessageAPIView
 
 urlpatterns = [
-    path('sos/', SOSMessageView.as_view(), name='sos_message'),
+    path('sos/', SOSMessageAPIView.as_view(), name='sos_message'),
 ]
 
