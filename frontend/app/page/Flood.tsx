@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     color: "#1F2937",
     textAlign: "center",
   },
+
   timerContainer: {
     backgroundColor: "#FF5C5C",
     width: 200,

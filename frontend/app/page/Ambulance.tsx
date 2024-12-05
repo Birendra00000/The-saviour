@@ -20,10 +20,10 @@ const AmbulanceScreen: React.FC = () => {
 
   // Dummy ambulances
   const ambulances: Ambulance[] = [
-    { id: "1", latitude: 45.61921927, longitude: -73.71678582 }, // 500 meters away
-    { id: "2", latitude: 27.695765, longitude: 84.6547488 }, // 600 meters away
-    { id: "3", latitude: 27.719, longitude: 85.3148 }, // 700 meters away
-    { id: "4", latitude: 27.71, longitude: 85.307 }, // 1500 meters away (Out of range)
+    { id: "1", latitude: 27.692151, longitude: 84.428722 },
+    { id: "2", latitude: 27.680562, longitude: 84.449697 },
+    { id: "3", latitude: 27.719, longitude: 85.3148 },
+    { id: "4", latitude: 27.71, longitude: 85.307 },
   ];
 
   // Function to calculate the distance between two points in meters
