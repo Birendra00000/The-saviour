@@ -11,6 +11,7 @@ import {
   StatusBar,
 } from "react-native";
 import * as Location from "expo-location";
+import { useAuth } from "./context/AuthContext";
 
 // Emergency options
 const emergencyOptions: {
@@ -35,7 +36,7 @@ const emergencyOptions: {
     label: "Fire Brigade",
     emoji: "🚒",
     color: "#FDEDEC",
-    route: "/fire-brigade" as RelativePathString,
+    route: "/page/Fire" as RelativePathString,
   },
   {
     label: "Ambulance",
@@ -57,7 +58,9 @@ const emergencyOptions: {
   },
 ];
 
-export default function HomeScreen() {
+export default function Home() {
+  const { logout } = useAuth(); // Use the logout function from your AuthContext
+
   const [location, setLocation] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -90,9 +93,9 @@ export default function HomeScreen() {
       // Combine address components
       if (address && address.length > 0) {
         const addr = address[0];
-        const fullAddress = `${addr.street || ""}, ${addr.city || ""}, ${
-          addr.region || ""
-        }, ${addr.country || ""}`;
+        const fullAddress = `${addr.street || "++"},  ${addr.city || ""}, ${
+          addr.district || ""
+        }, ${addr.region || ""}, ${addr.country || ""}`;
         setLocation(fullAddress);
       }
     })();
@@ -112,7 +115,7 @@ export default function HomeScreen() {
           />
         </View>
         <View style={styles.locationContainer}>
-          <Text style={styles.currentLocation}>Current location</Text>
+          <Text style={styles.currentLocation}>Current location:</Text>
           <Text style={styles.address}>
             {location || errorMsg || "Fetching location..."}
           </Text>
@@ -134,17 +137,21 @@ export default function HomeScreen() {
           </Text>
         </View>
         <Image
-          source={{ uri: "https://via.placeholder.com/150" }} // Replace with your illustration URL
-          style={styles.illustration}
+          source={require("../assets/images/sos/dangerLogo.png")} // Correctly referencing a local image
+          style={styles.logo}
         />
       </View>
 
       {/* SOS Button */}
-      <View style={styles.sosContainer}>
+      {/* <View style={styles.sosContainer}>
         <TouchableOpacity style={styles.sosButton}>
           <Text style={styles.sosText}>SOS</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
+      {/* <Image
+        source={require("../assets/images/sos/dangerLogo.png")} // Correctly referencing a local image
+        style={styles.logo}
+      /> */}
 
       {/* Emergency Options */}
 
@@ -167,8 +174,17 @@ export default function HomeScreen() {
         {[
           { label: "Home", emoji: "🏠" },
           { label: "Profile", emoji: "👤" },
+          { label: "Logout", emoji: "🚪" }, // Changed emoji to door for better meaning
         ].map((item, index) => (
-          <TouchableOpacity key={index} style={styles.footerItem}>
+          <TouchableOpacity
+            key={index}
+            style={styles.footerItem}
+            onPress={() => {
+              if (item.label === "Logout") {
+                logout(); // Call logout when "Logout" is clicked
+              }
+            }}
+          >
             <Text style={styles.footerIcon}>{item.emoji}</Text>
             <Text style={styles.footerText}>{item.label}</Text>
           </TouchableOpacity>
@@ -282,6 +298,7 @@ const styles = StyleSheet.create({
     color: "#333",
     textAlign: "center",
     marginVertical: 5,
+    marginTop: 100,
   },
   emergencyGrid: {
     flexDirection: "row",
@@ -316,7 +333,6 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingVertical: 5,
     backgroundColor: "#FFFFFF",
     position: "absolute",
     bottom: 0,

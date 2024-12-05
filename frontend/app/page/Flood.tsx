@@ -1,74 +1,61 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 const EmergencyAlertScreen = () => {
   const router = useRouter();
-  const [timer, setTimer] = useState(5);
-  const [isRunning, setIsRunning] = useState(true);
+  const [timer, setTimer] = useState(3); // Initial timer value
+  const [isRunning, setIsRunning] = useState(true); // Tracks if the timer is running
+  const [previousTimer, setPreviousTimer] = useState(3); // Store the previous timer value before stopping
 
+  // Effect to handle the timer countdown
   useEffect(() => {
-    let interval: NodeJS.Timeout | undefined; // Explicitly define the type of interval
+    let interval: NodeJS.Timeout | undefined;
 
     if (isRunning && timer > 0) {
       interval = setInterval(() => {
-        setTimer((prev) => prev - 1);
+        setTimer((prev) => prev - 1); // Decrease the timer by 1 each second
       }, 1000);
     } else if (interval) {
-      clearInterval(interval);
+      clearInterval(interval); // Clear the interval if the timer reaches 0 or is stopped
     }
 
     return () => {
       if (interval) {
-        clearInterval(interval);
+        clearInterval(interval); // Cleanup the interval
       }
     };
   }, [isRunning, timer]);
 
-  const stopTimer = () => {
-    setIsRunning(false);
+  // Function to start/stop and resume the timer
+  const handleTimerPress = () => {
+    if (isRunning) {
+      setIsRunning(false); // Stop the timer
+      setPreviousTimer(timer); // Store the current timer value before stopping
+    } else {
+      setIsRunning(true); // Start the timer again
+      setTimer(previousTimer); // Resume from the previous timer value
+    }
   };
 
   return (
     <View style={styles.container}>
       {/* Top Icon */}
-      <View style={styles.topIconContainer}>
-        <View style={styles.topIcon}>
-          <Text style={styles.topIconText}>*</Text>
-        </View>
-      </View>
 
       {/* Title and Description */}
       <Text style={styles.title}>Sending Emergency Alert</Text>
-      <Text style={styles.subtitle}>SOS Will be sent once the timer is off</Text>
 
       {/* Timer */}
-      <TouchableOpacity style={styles.timerContainer} onPress={stopTimer}>
-        <Text style={styles.timerText}>{`00 : ${timer.toString().padStart(2, '0')}`}</Text>
+      <TouchableOpacity
+        style={styles.timerContainer}
+        onPress={handleTimerPress}
+      >
+        <Text style={styles.timerText}>{`00 : ${timer
+          .toString()
+          .padStart(2, "0")}`}</Text>
         <Text style={styles.timerSubtitle}>Seconds</Text>
       </TouchableOpacity>
-      <Text style={styles.stopInstruction}>Tap the timer to stop</Text>
-
-      {/* Bottom Actions */}
-      <View style={styles.bottomActions}>
-        <TouchableOpacity style={styles.actionButton}>
-          <Text style={styles.actionButtonText}>🔔</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton} onPress={() => {
-            router.push("/page/Menu"); // Navigate to Login screen
-          }}>
-          <Text style={styles.actionButtonText}>☰</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.actionButton, styles.sosButton]}>
-          <Text style={[styles.actionButtonText, styles.sosButtonText]}>SOS</Text>
-        </TouchableOpacity>
-      </View>
+      <Text style={styles.stopInstruction}>Tap the timer to stop/restart</Text>
     </View>
   );
 };
@@ -76,23 +63,23 @@ const EmergencyAlertScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    backgroundColor: '#F9FAFC',
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    backgroundColor: "#F9FAFC",
     paddingVertical: 40,
   },
   topIconContainer: {
     marginTop: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   topIcon: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     width: 40,
     height: 40,
     borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -100,29 +87,23 @@ const styles = StyleSheet.create({
   },
   topIconText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FF5C5C',
+    fontWeight: "bold",
+    color: "#FF5C5C",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#1F2937',
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#6B7280',
-    textAlign: 'center',
-    marginBottom: 10,
+    fontWeight: "bold",
+    color: "#1F2937",
+    textAlign: "center",
   },
   timerContainer: {
-    backgroundColor: '#FF5C5C',
+    backgroundColor: "#FF5C5C",
     width: 200,
     height: 200,
     borderRadius: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#FF5C5C',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#FF5C5C",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -130,48 +111,20 @@ const styles = StyleSheet.create({
   },
   timerText: {
     fontSize: 36,
-    color: '#FFFFFF',
-    fontWeight: 'bold',
+    color: "#FFFFFF",
+    fontWeight: "bold",
   },
   timerSubtitle: {
     fontSize: 16,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     marginTop: 5,
   },
   stopInstruction: {
-    fontSize: 14,
-    color: '#6B7280',
-    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#6B7280",
+    textAlign: "center",
     marginTop: 20,
-  },
-  bottomActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
-  },
-  actionButton: {
-    backgroundColor: '#1F2937',
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  actionButtonText: {
-    fontSize: 20,
-    color: '#FFFFFF',
-  },
-  sosButton: {
-    backgroundColor: '#FF5C5C',
-  },
-  sosButtonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
   },
 });
 
