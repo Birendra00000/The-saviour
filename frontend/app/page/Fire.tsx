@@ -1,20 +1,23 @@
 import React from "react";
-import { useRouter } from "expo-router";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Linking,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
-const FireScreen = () => {
-  const router = useRouter();
-  const mobileNumber = "9805253000"; // Emergency contact number
-
-  // Function to directly open the phone app and initiate a call
+const EmergencyAlert = () => {
+  /**
+   * Handles the emergency call action.
+   */
   const handleEmergencyCall = () => {
-    Linking.openURL(`tel:${mobileNumber}`); // Directly opens the call app
+    Alert.alert(
+      "Emergency Call",
+      "Are you sure you want to call the Fire Brigade?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Call Now",
+          onPress: () => console.log("Calling Fire Brigade..."),
+        },
+      ]
+    );
   };
 
   return (
@@ -30,7 +33,8 @@ const FireScreen = () => {
         style={styles.callButtonContainer}
         onPress={handleEmergencyCall}
       >
-        <Text style={styles.callButtonText}>SOS Call</Text>
+        <MaterialIcons name="fire-extinguisher" size={30} color="#fff" />
+        <Text style={styles.callButtonText}>Call Fire Brigade</Text>
       </TouchableOpacity>
     </View>
   );
@@ -39,42 +43,44 @@ const FireScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#F9FAFC",
-    paddingVertical: 40,
+    alignItems: "center",
+    padding: 20,
+    backgroundColor: "#1B263B", // Dark background for emergency theme
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
-    color: "#1F2937",
+    color: "#E74C3C", // Red for emergency
+    marginBottom: 8,
     textAlign: "center",
-    marginBottom: 10,
   },
   subtitle: {
     fontSize: 16,
-    color: "#6B7280",
+    color: "#D5D8DC", // Light grey for contrast
+    marginBottom: 20,
     textAlign: "center",
-    marginBottom: 30,
   },
   callButtonContainer: {
-    backgroundColor: "#FF5C5C",
-    width: 200,
-    height: 200,
-    borderRadius: 100,
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#FF5C5C",
+    backgroundColor: "#E74C3C", // Emergency red button
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 50,
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 5,
+    shadowRadius: 4,
+    elevation: 8,
   },
   callButtonText: {
-    fontSize: 36,
-    color: "#FFFFFF",
+    fontSize: 18,
     fontWeight: "bold",
+    color: "#fff",
+    marginLeft: 10,
   },
 });
 
-export default FireScreen;
+export default EmergencyAlert;

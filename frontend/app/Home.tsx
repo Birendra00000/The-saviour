@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import * as Location from "expo-location";
 import { useAuth } from "./context/AuthContext";
-
 // Emergency options
 const emergencyOptions: {
   label: string;
@@ -30,7 +29,7 @@ const emergencyOptions: {
     label: "Landslide",
     emoji: "⛰️",
     color: "#F9EBEA",
-    route: "/landslide" as RelativePathString,
+    route: "/page/Landslide" as RelativePathString,
   },
   {
     label: "Fire Brigade",
@@ -54,7 +53,7 @@ const emergencyOptions: {
     label: "Help Desk",
     emoji: "👨‍💻",
     color: "#EAF2F8",
-    route: "/help-desk" as RelativePathString,
+    route: "/page/HelpDesk" as RelativePathString,
   },
 ];
 
@@ -110,7 +109,7 @@ export default function Home() {
       <View style={styles.header}>
         <View style={styles.logoContainer}>
           <Image
-            source={{ uri: "https://via.placeholder.com/40" }} // Replace with your logo URL
+            source={require("../assets/images/sos/person.png")} // Replace with your logo URL
             style={styles.logo}
           />
         </View>
@@ -137,8 +136,8 @@ export default function Home() {
           </Text>
         </View>
         <Image
-          source={require("../assets/images/sos/dangerLogo.png")} // Correctly referencing a local image
-          style={styles.logo}
+          source={require("../assets/images/sos/disaster.png")} // Correctly referencing a local image
+          style={styles.logo1}
         />
       </View>
 
@@ -171,24 +170,25 @@ export default function Home() {
 
       {/* Footer Navigation */}
       <View style={styles.footer}>
-        {[
-          { label: "Home", emoji: "🏠" },
-          { label: "Profile", emoji: "👤" },
-          { label: "Logout", emoji: "🚪" }, // Changed emoji to door for better meaning
-        ].map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.footerItem}
-            onPress={() => {
-              if (item.label === "Logout") {
-                logout(); // Call logout when "Logout" is clicked
-              }
-            }}
-          >
-            <Text style={styles.footerIcon}>{item.emoji}</Text>
-            <Text style={styles.footerText}>{item.label}</Text>
-          </TouchableOpacity>
-        ))}
+        <TouchableOpacity
+          style={styles.footerItem}
+          onPress={() => {
+            // Handle Home action
+          }}
+        >
+          <Text style={styles.footerIcon}>🏠</Text>
+          <Text style={styles.footerText}>Home</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.footerItem}
+          onPress={() => {
+            logout(); // Call logout when "Logout" is clicked
+          }}
+        >
+          <Text style={styles.footerIcon}>🚪</Text>
+          <Text style={styles.footerText}>Logout</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -199,6 +199,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F5F5F5",
     paddingTop: 25,
+    marginTop: 10,
   },
   header: {
     flexDirection: "row",
@@ -213,7 +214,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: 10,
   },
   locationContainer: {
     flex: 1,
@@ -236,29 +237,35 @@ const styles = StyleSheet.create({
   emergencyContainer: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 20,
+    padding: 25,
     backgroundColor: "#FFFFFF",
     borderRadius: 15,
-    margin: 15,
+    margin: 20,
     elevation: 10,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
+    marginTop: 50,
   },
   textContainer: {
     flex: 1,
-    marginRight: 10,
+    marginRight: 15,
   },
   title: {
-    fontSize: 22,
+    fontSize: 25,
     fontWeight: "bold",
     color: "#333",
   },
   description: {
     fontSize: 14,
     color: "#666",
-    marginTop: 5,
+    marginTop: 10,
+  },
+  logo1: {
+    width: 80,
+    height: 80,
+    borderRadius: 20,
   },
   illustration: {
     width: 100,
@@ -298,7 +305,7 @@ const styles = StyleSheet.create({
     color: "#333",
     textAlign: "center",
     marginVertical: 5,
-    marginTop: 100,
+    marginTop: 60,
   },
   emergencyGrid: {
     flexDirection: "row",

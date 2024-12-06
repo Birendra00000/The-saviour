@@ -7,7 +7,7 @@ interface LocationType {
   longitude: number;
 }
 
-const Flood = () => {
+const Landslide = () => {
   const [timer, setTimer] = useState(3);
   const [isRunning, setIsRunning] = useState(true);
   const [previousTimer, setPreviousTimer] = useState(3);
@@ -45,7 +45,7 @@ const Flood = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          message: "Flood Alert! Immediate evacuation required.",
+          message: "Landslide Alert! Immediate evacuation required.",
           latitude: location.latitude,
           longitude: location.longitude,
         }),
@@ -93,12 +93,8 @@ const Flood = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Flood Emergency Alert</Text>
+      <Text style={styles.title}>Landslide Emergency Alert</Text>
       <Text style={styles.subtitle}>Act quickly. Time is critical!</Text>
-      <Text style={styles.warningText}>
-        Warning: Flood risk detected in your area!
-      </Text>
-
       <TouchableOpacity
         style={styles.timerContainer}
         onPress={handleTimerPress}
@@ -108,7 +104,6 @@ const Flood = () => {
           .padStart(2, "0")}`}</Text>
         <Text style={styles.timerSubtitle}>Seconds</Text>
       </TouchableOpacity>
-
       <Text style={styles.stopInstruction}>Tap the timer to pause/resume</Text>
     </View>
   );
@@ -119,26 +114,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "space-evenly",
-    backgroundColor: "#1B263B",
+    backgroundColor: "#1B263B", // Background color remains unchanged
     paddingVertical: 40,
     paddingHorizontal: 20,
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: "#FFFFFF", // Changed to white
     textAlign: "center",
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 18,
-    color: "#FFFFFF",
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  warningText: {
-    fontSize: 18,
-    color: "#FF5C5C",
+    color: "#FFFFFF", // Changed to white
     textAlign: "center",
     marginBottom: 20,
   },
@@ -159,41 +148,24 @@ const styles = StyleSheet.create({
   },
   timerText: {
     fontSize: 48,
-    color: "#FFFFFF",
+    color: "#FFFFFF", // Changed to white
     fontWeight: "bold",
-    textShadowColor: "#333333",
+    textShadowColor: "#333333", // This provides a subtle shadow to make the text stand out
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 4,
   },
   timerSubtitle: {
     fontSize: 18,
-    color: "#FFFFFF",
+    color: "#FFFFFF", // Changed to white
     marginTop: 8,
   },
   stopInstruction: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: "#FFFFFF", // Changed to white
     textAlign: "center",
     marginTop: 20,
   },
-  safetyContainer: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: "#FF4747",
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  safetyTitle: {
-    fontSize: 20,
-    color: "#FFFFFF",
-    fontWeight: "bold",
-  },
-  safetyText: {
-    fontSize: 16,
-    color: "#FFFFFF",
-    marginTop: 5,
-  },
 });
 
-export default Flood;
+export default Landslide;
