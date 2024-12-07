@@ -1,23 +1,23 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Linking,
+  Alert,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const EmergencyAlert = () => {
   /**
    * Handles the emergency call action.
    */
+
+  const policeNumber = "103"; // Emergency contact number for police
+
   const handleEmergencyCall = () => {
-    Alert.alert(
-      "Emergency Call",
-      "Are you sure you want to call the Fire Brigade?",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Call Now",
-          onPress: () => console.log("Calling Fire Brigade..."),
-        },
-      ]
-    );
+    Linking.openURL(`tel:${policeNumber}`);
   };
 
   return (

@@ -8,6 +8,7 @@ import {
   Alert,
 } from "react-native";
 import axios from "axios";
+import { useRouter } from "expo-router";
 
 interface RegisterData {
   name: string;
@@ -16,6 +17,8 @@ interface RegisterData {
 }
 
 const Register: React.FC = () => {
+  const router = useRouter();
+
   const [username, setName] = useState<string>("");
   const [phone_number, setPhoneNumber] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -63,7 +66,6 @@ const Register: React.FC = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Create Account</Text>
       <Text style={styles.subtitle}>Join us to stay safe and connected</Text>
-
       <TextInput
         style={styles.input}
         placeholder="Full Name"
@@ -85,9 +87,11 @@ const Register: React.FC = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-
       <TouchableOpacity onPress={handleRegister} style={styles.button}>
         <Text style={styles.buttonText}>Register</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.push("/auth/Login")}>
+        <Text style={styles.link}>Already have an account? Login</Text>
       </TouchableOpacity>
     </View>
   );
@@ -103,7 +107,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#FF0000",
+    color: "red",
     marginBottom: 10,
   },
   subtitle: {
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   link: {
-    color: "#28A745",
+    color: "#FF0000",
     textAlign: "center",
     marginTop: 10,
   },

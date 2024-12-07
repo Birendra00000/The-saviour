@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { useRouter } from "expo-router";
 interface LoginData {
   phone_number: string;
   password: string;
@@ -17,6 +18,8 @@ interface LoginData {
 const LoginScreen: React.FC = () => {
   const [phone_number, setPhoneNumber] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  const router = useRouter();
 
   const { login } = useAuth(); // Destructure login function from context
 
@@ -88,7 +91,9 @@ const LoginScreen: React.FC = () => {
           /* Navigation logic to Register screen */
         }}
       >
-        <Text style={styles.link}>Don't have an account? Register</Text>
+        <TouchableOpacity onPress={() => router.push("/auth/Register")}>
+          <Text style={styles.link}>Don't have an account? Register</Text>
+        </TouchableOpacity>
       </TouchableOpacity>
     </View>
   );
@@ -104,7 +109,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#28A745",
+    color: "red",
     marginBottom: 10,
   },
   subtitle: {
@@ -121,7 +126,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   button: {
-    backgroundColor: "#28A745",
+    backgroundColor: "#FF0000",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
@@ -133,7 +138,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   link: {
-    color: "#28A745",
+    color: "#FF0000",
     textAlign: "center",
     marginTop: 10,
   },
